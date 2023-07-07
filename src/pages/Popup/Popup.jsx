@@ -1,25 +1,35 @@
-import React from 'react';
-import logo from '../../assets/img/logo.svg';
-import Greetings from '../../containers/Greetings/Greetings';
+import React, { useState } from 'react';
+import { Switch, Card } from 'antd';
 import './Popup.css';
+import { POPUP_INIT, POPUP_SUBMIT } from '../Background/constant';
+import { useEffect } from 'react';
 
 const Popup = () => {
+  const [open, setOpen] = useState(false);
+
+  function openChange(value) {
+    setOpen(value);
+    chrome.runtime.sendMessage({ type: POPUP_SUBMIT, open: value });
+  }
+
+  useEffect(() => {
+    chrome.runtime.sendMessage({ message: 'popup init', type: POPUP_INIT });
+
+    chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
+      console.log('%c Line:20 🥒', 'color:#42b983', data);
+      // handle message from background
+      if (data.type === POPUP_INIT) {
+        setOpen(data.open);
+      }
+    });
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/pages/Popup/Popup.jsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React!
-        </a>
+      <header className="header">
+        <Switch checked={open} onChange={openChange} />
       </header>
+      <main className="main"></main>
     </div>
   );
 };

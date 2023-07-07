@@ -1,11 +1,36 @@
-console.log('This is the background page.');
-console.log('Put the background scripts here.');
+import { POPUP_INIT, POPUP_SUBMIT } from './constant';
 
-console.log('%c Line:4 🥥', 'color:#42b983');
+console.log('%c Line:2 🌮', 'color:#3f7cff', 'start');
+const state = {
+  open: false,
+};
+
+chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
+  // handle message from PopUp
+  console.log('%c Line:9 🧀', 'color:#2eafb0', data, state);
+
+  switch (data.type) {
+    case POPUP_INIT:
+      chrome.runtime.sendMessage({
+        type: POPUP_INIT,
+        open: state.open,
+      });
+      break;
+    case POPUP_SUBMIT:
+      state.open = data.open;
+      break;
+    default:
+      break;
+  }
+});
+
 chrome.webRequest.onBeforeRequest.addListener(
   function (details) {
     const { initiator, url } = details;
     let result = {};
+    if (!state.open) {
+      return;
+    }
     // 根据需要进行请求拦截的逻辑处理
     if (details.url.includes('example.com')) {
       // 取消请求
