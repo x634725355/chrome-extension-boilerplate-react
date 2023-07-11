@@ -29,7 +29,7 @@ chrome.webRequest.onBeforeRequest.addListener(
     const { initiator, url } = details;
     let result = {};
     if (!state.open) {
-      return;
+      return result;
     }
     // 根据需要进行请求拦截的逻辑处理
     if (details.url.includes('example.com')) {

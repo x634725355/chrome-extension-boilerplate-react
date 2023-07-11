@@ -8,9 +8,39 @@
   align-items: center;
 }
 
-.App main {
+.App .main {
   margin-top: 8px;
-  height: 80px;
   border: 1px solid rgba(5, 5, 5, 0.06);
   border-radius: 8px;
+}
+
+.main .option {
+  display: grid;
+  height: 80px;
+}
+
+.option-url {
+  
+}
+
+.option-url > label {
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+.option-label {
+  display: flex;
+}
+
+.option-value {
+  display: flex;
+  align-items: center;
+}
+
+.option-value > div:nth-child(n) {
+  flex: 1;
+}
+
+
+.option-open {
 }
