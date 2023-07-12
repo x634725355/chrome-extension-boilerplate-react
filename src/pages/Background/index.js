@@ -3,6 +3,14 @@ import { POPUP_INIT, POPUP_SUBMIT } from './constant';
 console.log('%c Line:2 🌮', 'color:#3f7cff', 'start');
 const state = {
   open: false,
+  options: [
+    {
+      url: '',
+      open: false,
+      method: 'get',
+      key: +new Date(),
+    },
+  ],
 };
 
 chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
@@ -13,11 +21,16 @@ chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
     case POPUP_INIT:
       chrome.runtime.sendMessage({
         type: POPUP_INIT,
-        open: state.open,
+        ...state,
       });
       break;
     case POPUP_SUBMIT:
-      state.open = data.open;
+      if (typeof data.open === 'boolean') {
+        state.open = data.open;
+      }
+      if (data.options) {
+        state.options = data.options;
+      }
       break;
     default:
       break;
@@ -26,7 +39,7 @@ chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
 
 chrome.webRequest.onBeforeRequest.addListener(
   function (details) {
-    const { initiator, url } = details;
+    const { initiator, url, method } = details;
     let result = {};
     if (!state.open) {
       return result;
@@ -36,30 +49,20 @@ chrome.webRequest.onBeforeRequest.addListener(
       // 取消请求
       return { cancel: true };
     }
-    if (
-      details.url.indexOf(initiator + '/admin/invite/insertWhitePermission') !=
-      -1
-    ) {
+
+    const urlMethodArr = state.options.map(
+      (p) => `${initiator}${p.url}-${p.method}`
+    );
+
+    console.log('%c Line:57 🍅', 'color:#ffdd4d', urlMethodArr);
+
+    if (urlMethodArr.includes(`${url}-${method}`)) {
       result.redirectUrl = url.replace(
         initiator,
         'http://127.0.0.1:4523/m1/2829907-0-default'
       );
       return result;
     }
-    if (
-      details.url.indexOf(initiator + '/api/sg/uoc/auth/queryResourceStatus') !=
-      -1
-    ) {
-      result.redirectUrl = url.replace(
-        initiator,
-        'http://127.0.0.1:4523/m1/2829907-0-default'
-      );
-      return result;
-    }
-    // if (details.url.indexOf(initiator + '/admin/invite/getList') != -1) {
-    //   result.redirectUrl = url.replace(initiator, "http://127.0.0.1:4523/m1/2829907-0-default")
-    //   return result;
-    // }
   },
   { urls: ['<all_urls>'] },
   ['blocking']

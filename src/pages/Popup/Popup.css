@@ -4,7 +4,7 @@
 
 .App .header {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 }
 
@@ -15,21 +15,18 @@
 }
 
 .main .option {
-  display: grid;
+  padding: 8px;
   height: 80px;
+  border-bottom: 1px solid rgba(214, 212, 189, 0.475);
 }
 
-.option-url {
-  
-}
-
-.option-url > label {
-  margin-bottom: 8px;
-  display: inline-block;
+.main .option:last-child {
+  border-bottom: none;
 }
 
 .option-label {
   display: flex;
+  margin-bottom: 8px;
 }
 
 .option-value {
@@ -37,8 +34,13 @@
   align-items: center;
 }
 
-.option-value > div:nth-child(n) {
+.option-value > div:nth-child(n+1) {
+  display: flex;
+  justify-content: center;
   flex: 1;
+}
+.option-value > div:nth-child(1) {
+  flex: 4;
 }
 
 
