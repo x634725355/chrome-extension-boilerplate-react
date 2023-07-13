@@ -1,17 +1,28 @@
 import { POPUP_INIT, POPUP_SUBMIT } from './constant';
 
 console.log('%c Line:2 🌮', 'color:#3f7cff', 'start');
+
 const state = {
   open: false,
   options: [
     {
       url: '',
       open: false,
-      method: 'get',
+      method: 'GET',
       key: +new Date(),
     },
   ],
 };
+
+chrome.storage.local.get(['open', 'options'], (result) => {
+  console.log('%c Line:17 🍌 result', 'color:#4fff4B', result);
+  if (!result.open) {
+    chrome.storage.local.set(state);
+  } else {
+    state.open = result.open;
+    state.options = result.options;
+  }
+});
 
 chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
   // handle message from PopUp
@@ -27,9 +38,11 @@ chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
     case POPUP_SUBMIT:
       if (typeof data.open === 'boolean') {
         state.open = data.open;
+        chrome.storage.local.set({ open: data.open });
       }
       if (data.options) {
         state.options = data.options;
+        chrome.storage.local.set({ options: data.options });
       }
       break;
     default:
@@ -54,9 +67,8 @@ chrome.webRequest.onBeforeRequest.addListener(
       (p) => `${initiator}${p.url}-${p.method}`
     );
 
-    console.log('%c Line:57 🍅', 'color:#ffdd4d', urlMethodArr);
-
     if (urlMethodArr.includes(`${url}-${method}`)) {
+      console.log('%c Line:57 🍅', 'color:#ffdd4d', urlMethodArr, method);
       result.redirectUrl = url.replace(
         initiator,
         'http://127.0.0.1:4523/m1/2829907-0-default'

@@ -10,7 +10,7 @@ const Popup = () => {
     {
       url: '',
       open: false,
-      method: 'get',
+      method: 'GET',
       key: +new Date(),
     },
   ]);
@@ -26,7 +26,7 @@ const Popup = () => {
       {
         url: '',
         open: false,
-        method: 'get',
+        method: 'GET',
         key: +new Date(),
       },
     ];
@@ -101,7 +101,7 @@ const Popup = () => {
                   }
                   options={HTTP_METHOD.map((method) => ({
                     value: method,
-                    label: method.toUpperCase(),
+                    label: method,
                   }))}
                 />
               </div>
