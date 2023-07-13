@@ -6,14 +6,8 @@ import { Button, Input, Select, Switch } from 'antd';
 
 const Popup = () => {
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState([
-    {
-      url: '',
-      open: false,
-      method: 'GET',
-      key: +new Date(),
-    },
-  ]);
+  const [options, setOptions] = useState([]);
+  const [initiator, setInitiator] = useState('');
 
   function openChange(value) {
     setOpen(value);
@@ -68,6 +62,14 @@ const Popup = () => {
         <Button onClick={addOption} type="primary">
           ADD
         </Button>
+        <span style={{ width: '8px' }}></span>
+        <span>完整域名:</span>
+        <span style={{ width: '8px' }}></span>
+        <Input
+          style={{ width: 300 }}
+          value={initiator}
+          onChange={(e) => setInitiator(e.target.value)}
+        ></Input>
       </header>
       <main className="main">
         {options.map((option, index) => (

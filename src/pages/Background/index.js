@@ -4,6 +4,7 @@ console.log('%c Line:2 🌮', 'color:#3f7cff', 'start');
 
 const state = {
   open: false,
+  initiator: '',
   options: [
     {
       url: '',
@@ -19,6 +20,7 @@ chrome.storage.local.get(['open', 'options'], (result) => {
   if (!result.open) {
     chrome.storage.local.set(state);
   } else {
+    state.initiator = result.initiator;
     state.open = result.open;
     state.options = result.options;
   }
@@ -43,6 +45,10 @@ chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
       if (data.options) {
         state.options = data.options;
         chrome.storage.local.set({ options: data.options });
+      }
+      if (data.initiator) {
+        state.options = data.initiator;
+        chrome.storage.local.set({ initiator: data.initiator });
       }
       break;
     default:
@@ -71,7 +77,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       console.log('%c Line:57 🍅', 'color:#ffdd4d', urlMethodArr, method);
       result.redirectUrl = url.replace(
         initiator,
-        'http://127.0.0.1:4523/m1/2829907-0-default'
+        initiator || 'http://127.0.0.1:4523/m1/2829907-0-default'
       );
       return result;
     }
