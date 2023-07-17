@@ -77,7 +77,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       console.log('%c Line:57 🍅', 'color:#ffdd4d', urlMethodArr, method);
       result.redirectUrl = url.replace(
         initiator,
-        initiator || 'http://127.0.0.1:4523/m1/2829907-0-default'
+        state.initiator || 'http://127.0.0.1:4523/m1/2829907-0-default'
       );
       return result;
     }
