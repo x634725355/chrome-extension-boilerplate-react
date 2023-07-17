@@ -73,7 +73,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       (p) => `${initiator}${p.url}-${p.method}`
     );
 
-    if (urlMethodArr.includes(`${url}-${method}`)) {
+    if (urlMethodArr.includes(`${url.split('?')[0]}-${method}`)) {
       console.log('%c Line:57 🍅', 'color:#ffdd4d', urlMethodArr, method);
       result.redirectUrl = url.replace(
         initiator,
