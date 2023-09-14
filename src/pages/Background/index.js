@@ -70,7 +70,7 @@ chrome.webRequest.onBeforeRequest.addListener(
     }
 
     const urlMethodArr = state.options.map(
-      (p) => `${initiator}${p.url}-${p.method}`
+      (p) => p.open && `${initiator}${p.url}-${p.method}`
     );
 
     if (urlMethodArr.includes(`${url.split('?')[0]}-${method}`)) {
