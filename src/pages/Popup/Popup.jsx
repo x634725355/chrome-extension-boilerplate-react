@@ -41,6 +41,11 @@ const Popup = () => {
     chrome.runtime.sendMessage({ type: POPUP_SUBMIT, options });
   };
 
+  const handleInitiator = (e) => {
+    setInitiator(e.target.value);
+    chrome.runtime.sendMessage({ type: POPUP_SUBMIT, initiator });
+  };
+
   useEffect(() => {
     chrome.runtime.sendMessage({ message: 'popup init', type: POPUP_INIT });
 
@@ -68,7 +73,7 @@ const Popup = () => {
         <Input
           style={{ width: 300 }}
           value={initiator}
-          onChange={(e) => setInitiator(e.target.value)}
+          onChange={handleInitiator}
         ></Input>
       </header>
       <main className="main">
