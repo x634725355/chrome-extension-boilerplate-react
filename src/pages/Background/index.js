@@ -18,7 +18,8 @@ const state = {
 chrome.storage.local.get(['open', 'options'], (result) => {
   console.log('%c Line:17 🍌 result', 'color:#4fff4B', result);
   if (!result.open) {
-    chrome.storage.local.set(state);
+    localStorage.setItem('state', state);
+    // chrome.storage.local.set(state);
   } else {
     state.initiator = result.initiator;
     state.open = result.open;
@@ -40,16 +41,17 @@ chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
     case POPUP_SUBMIT:
       if (typeof data.open === 'boolean') {
         state.open = data.open;
-        chrome.storage.local.set({ open: data.open });
+        // chrome.storage.local.set({ open: data.open });
       }
       if (data.options) {
         state.options = data.options;
-        chrome.storage.local.set({ options: data.options });
+        // chrome.storage.local.set({ options: data.options });
       }
       if (data.initiator) {
         state.options = data.initiator;
-        chrome.storage.local.set({ initiator: data.initiator });
+        // chrome.storage.local.set({ initiator: data.initiator });
       }
+      localStorage.setItem('state', state);
       break;
     default:
       break;

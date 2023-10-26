@@ -43,7 +43,10 @@ const Popup = () => {
 
   const handleInitiator = (e) => {
     setInitiator(e.target.value);
-    chrome.runtime.sendMessage({ type: POPUP_SUBMIT, initiator });
+    chrome.runtime.sendMessage({
+      type: POPUP_SUBMIT,
+      initiator: e.target.value,
+    });
   };
 
   useEffect(() => {
